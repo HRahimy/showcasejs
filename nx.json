@@ -1,14 +1,9 @@
 {
-  "npmScope": "showcase",
-  "affected": {
-    "defaultBase": "master"
-  },
+  "npmScope": "showcasejs",
+  "affected": { "defaultBase": "master" },
   "implicitDependencies": {
     "angular.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     "tsconfig.base.json": "*",
     "tslint.json": "*",
     ".eslintrc.json": "*",
@@ -16,35 +11,17 @@
   },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/nx-cloud",
-      "options": {
-        "accessToken": "MTViOWNjNjEtOGQ3Yy00N2RjLWE2OTctNTFhYjBiZDU4ZjQwfHJlYWQtd3JpdGU=",
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "e2e"
-        ],
-        "canTrackAnalytics": false,
-        "showUsageWarnings": true
-      }
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
     }
   },
   "projects": {
-    "showcaseplatform": {
-      "tags": []
-    },
-    "showcaseplatform-e2e": {
+    "showcase-app": { "tags": [] },
+    "showcase-app-e2e": {
       "tags": [],
-      "implicitDependencies": [
-        "showcaseplatform"
-      ]
+      "implicitDependencies": ["showcase-app"]
     },
-    "api": {
-      "tags": []
-    },
-    "api-interfaces": {
-      "tags": []
-    }
+    "api": { "tags": [] },
+    "api-interfaces": { "tags": [] }
   }
 }

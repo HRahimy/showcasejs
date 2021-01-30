@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Message } from '@showcase/api-interfaces';
+import { Message } from '@showcasejs/api-interfaces';
 
 @Component({
-  selector: 'showcase-root',
+  selector: 'showcasejs-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

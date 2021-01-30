@@ -1,7 +1,3 @@
 module.exports = {
-  projects: [
-    '<rootDir>/apps/showcaseplatform',
-    '<rootDir>/apps/api',
-    '<rootDir>/libs/api-interfaces',
-  ],
+  projects: ['<rootDir>/apps/showcase-app', '<rootDir>/apps/api'],
 };

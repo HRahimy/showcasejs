@@ -1,41 +1,70 @@
 {
   "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "css"
+    }
+  },
+  "defaultProject": "showcase-app",
   "projects": {
-    "showcaseplatform": {
+    "showcase-app": {
       "projectType": "application",
-      "schematics": {},
-      "root": "apps/showcaseplatform",
-      "sourceRoot": "apps/showcaseplatform/src",
-      "prefix": "showcase",
+      "root": "apps/showcase-app",
+      "sourceRoot": "apps/showcase-app/src",
+      "prefix": "showcasejs",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/showcaseplatform",
-            "index": "apps/showcaseplatform/src/index.html",
-            "main": "apps/showcaseplatform/src/main.ts",
-            "polyfills": "apps/showcaseplatform/src/polyfills.ts",
-            "tsConfig": "apps/showcaseplatform/tsconfig.app.json",
+            "outputPath": "dist/apps/showcase-app",
+            "index": "apps/showcase-app/src/index.html",
+            "main": "apps/showcase-app/src/main.ts",
+            "polyfills": "apps/showcase-app/src/polyfills.ts",
+            "tsConfig": "apps/showcase-app/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "apps/showcaseplatform/src/favicon.ico",
-              "apps/showcaseplatform/src/assets"
+              "apps/showcase-app/src/favicon.ico",
+              "apps/showcase-app/src/assets"
             ],
-            "styles": ["apps/showcaseplatform/src/styles.css"],
+            "styles": ["apps/showcase-app/src/styles.css"],
             "scripts": []
           },
           "configurations": {
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/showcaseplatform/src/environments/environment.ts",
-                  "with": "apps/showcaseplatform/src/environments/environment.prod.ts"
+                  "replace": "apps/showcase-app/src/environments/environment.ts",
+                  "with": "apps/showcase-app/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -58,64 +87,62 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "showcaseplatform:build",
-            "proxyConfig": "apps/showcaseplatform/proxy.conf.json"
+            "browserTarget": "showcase-app:build",
+            "proxyConfig": "apps/showcase-app/proxy.conf.json"
           },
           "configurations": {
             "production": {
-              "browserTarget": "showcaseplatform:build:production"
+              "browserTarget": "showcase-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "showcaseplatform:build"
+            "browserTarget": "showcase-app:build"
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "apps/showcaseplatform/tsconfig.app.json",
-              "apps/showcaseplatform/tsconfig.spec.json",
-              "apps/showcaseplatform/tsconfig.editor.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/showcaseplatform/**/*"]
+            "lintFilePatterns": [
+              "apps/showcase-app/src/**/*.ts",
+              "apps/showcase-app/src/**/*.html"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/showcase-app"],
           "options": {
-            "jestConfig": "apps/showcaseplatform/jest.config.js",
+            "jestConfig": "apps/showcase-app/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
-    "showcaseplatform-e2e": {
-      "root": "apps/showcaseplatform-e2e",
-      "sourceRoot": "apps/showcaseplatform-e2e/src",
+    "showcase-app-e2e": {
+      "root": "apps\\showcase-app-e2e",
+      "sourceRoot": "apps/showcase-app-e2e/src",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@nrwl/cypress:cypress",
           "options": {
-            "cypressConfig": "apps/showcaseplatform-e2e/cypress.json",
-            "tsConfig": "apps/showcaseplatform-e2e/tsconfig.e2e.json",
-            "devServerTarget": "showcaseplatform:serve"
+            "cypressConfig": "apps/showcase-app-e2e/cypress.json",
+            "tsConfig": "apps/showcase-app-e2e/tsconfig.e2e.json",
+            "devServerTarget": "showcase-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "showcaseplatform:serve:production"
+              "devServerTarget": "showcase-app:serve:production"
             }
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": ["apps/showcaseplatform-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/showcaseplatform-e2e/**/*"]
+            "lintFilePatterns": ["apps\\showcase-app-e2e/**/*.{js,ts}"]
           }
         }
       }
@@ -125,10 +152,10 @@
       "sourceRoot": "apps/api/src",
       "projectType": "application",
       "prefix": "api",
-      "schematics": {},
       "architect": {
         "build": {
           "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
@@ -156,17 +183,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "apps/api/tsconfig.app.json",
-              "apps/api/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/api/**/*"]
+            "lintFilePatterns": ["apps/api/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/api"],
           "options": {
             "jestConfig": "apps/api/jest.config.js",
             "passWithNoTests": true
@@ -178,73 +202,14 @@
       "root": "libs/api-interfaces",
       "sourceRoot": "libs/api-interfaces/src",
       "projectType": "library",
-      "schematics": {},
       "architect": {
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "tsConfig": [
-              "libs/api-interfaces/tsconfig.lib.json",
-              "libs/api-interfaces/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/api-interfaces/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/api-interfaces/jest.config.js",
-            "passWithNoTests": true
+            "lintFilePatterns": ["libs/api-interfaces/**/*.ts"]
           }
         }
       }
     }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
-  },
-  "schematics": {
-    "@nrwl/workspace": {
-      "library": {
-        "linter": "tslint"
-      }
-    },
-    "@nrwl/cypress": {
-      "cypress-project": {
-        "linter": "tslint"
-      }
-    },
-    "@nrwl/node": {
-      "application": {
-        "linter": "tslint"
-      },
-      "library": {
-        "linter": "tslint"
-      }
-    },
-    "@nrwl/nest": {
-      "application": {
-        "linter": "tslint"
-      },
-      "library": {
-        "linter": "tslint"
-      }
-    },
-    "@nrwl/express": {
-      "application": {
-        "linter": "tslint"
-      },
-      "library": {
-        "linter": "tslint"
-      }
-    },
-    "@nrwl/angular:application": {
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/angular:library": {
-      "unitTestRunner": "jest"
-    }
-  },
-  "defaultProject": "showcaseplatform"
+  }
 }
