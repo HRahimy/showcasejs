@@ -1,9 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CommandHandlers } from '../../commands/handlers';
-import { QueryHandlers } from '../../queries/handlers';
-import { UsersModule } from '../../users.module';
+import { UsersModule } from './users.module';
 import * as request from 'supertest';
 
 // eslint-disable-next-line max-len
