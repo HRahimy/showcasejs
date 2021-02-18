@@ -1,15 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
-import { Repository } from 'typeorm';
-import { CqrsModule } from '@nestjs/cqrs';
-import { ApiCqrsControllers } from '../../users.controller';
-import { CreateUserHandler } from './create-user.handler';
-import { UserEntity } from '../../entities/user.entity';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { entities } from '../../entities';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommandHandlers } from '../../commands/handlers';
 import { QueryHandlers } from '../../queries/handlers';
+import { UsersModule } from '../../users.module';
+import * as request from 'supertest';
 
 // eslint-disable-next-line max-len
 // TODO: Try out this SO answer for e2e testing https://stackoverflow.com/questions/57695246/unit-and-e2e-testing-with-nestjs-typeorm-on-mysql-and-passport-module
@@ -18,11 +13,13 @@ import { QueryHandlers } from '../../queries/handlers';
 
 describe('CreateUserHandler', () => {
   let app: INestApplication;
+  const usersService = { findAll: () => [] };
 
   beforeAll(async () => {
+    // Referred to this article for setting up the test architecture https://medium.com/@salmon.3e/integration-testing-with-nestjs-and-typeorm-2ac3f77e7628
     const moduleRef = await Test.createTestingModule({
       imports: [
-        CqrsModule,
+        UsersModule,
         TypeOrmModule.forRoot({
           type: 'postgres',
           host: '127.0.0.1',
@@ -33,11 +30,9 @@ describe('CreateUserHandler', () => {
           // entities: ['src/**/*.entity{.ts,.js}'],
           autoLoadEntities: true,
           synchronize: true,
+          dropSchema: true,
         }),
-        TypeOrmModule.forFeature([...entities]),
       ],
-      controllers: [...ApiCqrsControllers],
-      providers: [...CommandHandlers, ...QueryHandlers],
     }).compile();
 
     app = moduleRef.createNestApplication();
@@ -45,9 +40,13 @@ describe('CreateUserHandler', () => {
   });
 
   it(`/GET users`, () => {
-    return request(app.getHttpServer()).get('/users').expect(200);
-    // .expect({
-    //   data: catsService.findAll(),
-    // });
+    return request(app.getHttpServer())
+      .get('/users')
+      .expect(200)
+      .expect(usersService.findAll());
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });
