@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '@nestjs/common/exceptions';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -13,7 +14,13 @@ export class GetUserHandler implements IQueryHandler<GetUserQuery> {
   ) {}
 
   async execute(query: GetUserQuery): Promise<User> {
-    const entity = await this.userRepository.findOne({id: query.id});
+    const entity = await this.userRepository
+      .findOne({ id: query.id })
+      .catch((err) => {
+        throw new InternalServerErrorException(
+          `GetUserQuery(${query}) failed with error(${err})`
+        );
+      });
     return new User(entity.id, entity.name, entity.description);
   }
 }

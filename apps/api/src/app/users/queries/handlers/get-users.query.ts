@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '@nestjs/common/exceptions';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -14,7 +15,11 @@ export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(query: GetUsersQuery): Promise<User[]> {
-    const entities = await this.userRepository.find();
+    const entities = await this.userRepository.find().catch((err) => {
+      throw new InternalServerErrorException(
+        `GetUsersQuery(${query}) failed with error(${err})`
+      );
+    });
     const users = entities.map((userEntity) => {
       return new User(userEntity.id, userEntity.name, userEntity.description);
     });
