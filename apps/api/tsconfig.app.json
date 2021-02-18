@@ -4,7 +4,11 @@
     "outDir": "../../dist/out-tsc",
     "types": ["node"],
     "emitDecoratorMetadata": true,
-    "target": "es2015"
+    "target": "es2015",
+    /* Set module to commonjs because app was not compiling and I
+      resorted to this solution https://github.com/nrwl/nx/issues/2975#issuecomment-761066671
+    */
+    "module": "commonjs"
   },
   "exclude": ["**/*.spec.ts"],
   "include": ["**/*.ts"]
